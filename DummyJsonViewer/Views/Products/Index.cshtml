@@ -9,6 +9,7 @@
         <th>Title</th>
         <th>Price</th>
         <th>Tags</th>
+        <th>Detail</th>
        
     </tr>
     @foreach (var item in Model.products)
@@ -23,6 +24,7 @@
                     <p>@tag</p>
                 }
             </td>
+            <td><button><a asp-action="Detail" asp-route-id="@item.id" asp-route-skip="@Model.skipped" class="btn-black">Detail</a></button></td>
             
         </tr>
     }

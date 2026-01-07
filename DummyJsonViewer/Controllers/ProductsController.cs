@@ -8,7 +8,7 @@ namespace DummyJsonViewer.Controllers
 {
     public class ProductsController : Controller
     {
-        const string BASE_URL = "https://dummyjson.com";
+        const string BASE_URL = "https://dummyjson.com/products";
         private readonly ILogger<ProductsController> _logger;
         private readonly IHttpClientFactory _clientFactory;
 
@@ -16,7 +16,7 @@ namespace DummyJsonViewer.Controllers
         
         public Products products { get; set; }
         //Remove
-        public bool GetStudentsError { get; private set; }
+       
 
         public ProductsController(ILogger<ProductsController> logger, IHttpClientFactory clientFactory)
         {
@@ -36,7 +36,7 @@ namespace DummyJsonViewer.Controllers
             }
             var message = new HttpRequestMessage();
             message.Method = HttpMethod.Get;
-            message.RequestUri = new Uri($"{BASE_URL}/products?limit=30&skip={skip}"); 
+            message.RequestUri = new Uri($"{BASE_URL}?limit=30&skip={skip}"); 
             message.Headers.Add("Accept", "application/json");
 
             var client = _clientFactory.CreateClient();
@@ -58,12 +58,45 @@ namespace DummyJsonViewer.Controllers
             else
             {
                 _logger.LogInformation("Not Succsess");
-                GetStudentsError = true;
+               
                 
                 
             }
             
             return View(products);
+        }
+
+        public async Task<IActionResult> Detail(string id,int skip)
+        {
+            if (id == null)
+                return NotFound();
+
+            var message = new HttpRequestMessage();
+            message.Method = HttpMethod.Get;
+            message.RequestUri = new Uri($"{BASE_URL}/{id}");
+            message.Headers.Add("Accept", "application/json");
+
+            var client = _clientFactory.CreateClient();
+
+            var response = await client.SendAsync(message);
+
+            Product product = null;
+
+            if (response.IsSuccessStatusCode)
+            {
+                using var responseStream = await response.Content.ReadAsStreamAsync();
+                product = await JsonSerializer.DeserializeAsync<Product>(responseStream);
+            }
+           
+
+            if (product == null)
+                return NotFound();
+
+            Products finalproducts = new Products();
+            finalproducts.products = new Product[1] { product };
+            finalproducts.skipped = skip;
+            return View(finalproducts);
+
         }
     }
 }

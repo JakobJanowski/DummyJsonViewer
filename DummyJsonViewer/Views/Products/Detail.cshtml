@@ -1,0 +1,45 @@
+﻿@model Products
+@{
+	ViewData["Title"] = "Detail";
+}
+
+<table class="table table-striped table-bordered">
+    <tr>
+        <th>Title</th>
+        <th>Price</th>
+        <th>Description</th>
+        <th>Images</th>
+        <th>Tags</th>
+        <th>Shipping Information</th>
+        <th>Number in Stock</th>
+
+    </tr>
+   
+    <tr>
+        <td>@Model.products[0].title</td>
+        <td>@Model.products[0].price</td>
+        <td>@Model.products[0].description</td>
+        <td>
+            @foreach (var image in @Model.products[0].images)
+            {
+                <img src=@image style="height: 100%;width: 100%" />
+            }
+        </td>
+        <td>
+            @foreach (var tag in @Model.products[0].tags)
+            {
+                <p>@tag</p>
+            }
+        </td>
+        <td>@Model.products[0].shippingInformation</td>
+        <td>@Model.products[0].stock</td>
+
+        
+        
+            
+
+    </tr>
+    
+</table>
+
+<a asp-action="Index" asp-route-skip="@Model.skipped" class="btn-black">Go Back</a>
