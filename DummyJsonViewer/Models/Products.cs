@@ -7,7 +7,7 @@ namespace DummyJsonViewer.Models
         [Required]
         public Product[]? products { get; set; }
 
-        public int? skipped {  get; set; }
+        
         
     }
 }

@@ -1,4 +1,4 @@
-﻿@model Products
+﻿@model Product
 @{
 	ViewData["Title"] = "Detail";
 }
@@ -16,23 +16,23 @@
     </tr>
    
     <tr>
-        <td>@Model.products[0].title</td>
-        <td>@Model.products[0].price</td>
-        <td>@Model.products[0].description</td>
+        <td>@Model.title</td>
+        <td>@Model.price</td>
+        <td>@Model.description</td>
         <td>
-            @foreach (var image in @Model.products[0].images)
+            @foreach (var image in @Model.images)
             {
                 <img src=@image style="height: 100%;width: 100%" />
             }
         </td>
         <td>
-            @foreach (var tag in @Model.products[0].tags)
+            @foreach (var tag in @Model.tags)
             {
                 <p>@tag</p>
             }
         </td>
-        <td>@Model.products[0].shippingInformation</td>
-        <td>@Model.products[0].stock</td>
+        <td>@Model.shippingInformation</td>
+        <td>@Model.stock</td>
 
         
         
@@ -42,4 +42,4 @@
     
 </table>
 
-<a asp-action="Index" asp-route-skip="@Model.skipped" class="btn-black">Go Back</a>
+<a asp-action="Index" asp-route-PageNum="@ViewBag.PageNum"  class="btn-black">Go Back</a>
