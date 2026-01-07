@@ -2,55 +2,65 @@
 @{
 	ViewData["Title"] = "Products";
 }
+<!--Product Display Section-->
 
-<table class="table table-striped table-bordered">
-    <tr>
-        <th>Thumbnail</th>
-        <th>Title</th>
-        <th>Price</th>
-        <th>Tags</th>
-        <th>Detail</th>
-       
-    </tr>
-    @foreach (var item in Model.products)
-    {
-        <tr>
-            <td> <img src=@item.thumbnail /> </td>
-            <td>@item.title</td>
-            <td>@item.price</td>
-            <td>
-                @foreach(var tag in @item.tags)
-                {
-                    <p>@tag</p>
-                }
-            </td>
-            <td><button><a asp-action="Detail" asp-route-id="@item.id" asp-route-PageNum="@ViewBag.PageNum"  class="btn-black">Detail</a></button></td>
-            
-        </tr>
-    }
-</table>
-
-<button><a asp-controller="Products" asp-route-PageNum="0"  class="btn-black">First</a></button>
-
-<button><a asp-controller="Products" asp-route-PageNum="@(ViewBag.PageNum - 1)"  class="btn-black">Previous</a></button>
-
-<button><a asp-controller="Products" asp-route-PageNum="@(ViewBag.PageNum - 1) "  class="btn-black">@(ViewBag.PageNum)</a></button>
-
-<button><a asp-controller="Products" asp-route-PageNum="@ViewBag.PageNum"  class="btn-black">@(ViewBag.PageNum + 1)</a></button>
-
-<button><a asp-controller="Products" asp-route-PageNum="@(ViewBag.PageNum + 1)"  class="btn-black">@(ViewBag.PageNum + 2)</a></button>
-
-<button><a asp-controller="Products" asp-route-PageNum="@(ViewBag.PageNum + 1)"  class="btn-black">Next</a></button>
-
-<button><a asp-controller="Products" asp-route-PageNum="@ViewBag.TotalPages"  class="btn-black">Last</a></button>
-
-@if (ViewBag.PageNum >= ViewBag.TotalPages)
+@if(Model.products is null)
 {
-    <p>Displaying @((ViewBag.PageNum) * 30)-@ViewBag.TotalProducts / @ViewBag.TotalProducts Products</p>
+    <p>Opps nothing found</p>
 }
 else
 {
-    <p>Displaying @((ViewBag.PageNum) * 30)-@((ViewBag.PageNum + 1) * 30) / @ViewBag.TotalProducts Products</p>
-}
+    <table class="table table-striped table-bordered">
+        <tr>
+            <th>Thumbnail</th>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Tags</th>
+            <th>Detail</th>
 
+        </tr>
+        @foreach (var item in Model.products)
+        {
+            <tr>
+                <td> <img src=@item.thumbnail /> </td>
+                <td>@item.title</td>
+                <td>@item.price</td>
+                <td>
+                    @foreach (var tag in @item.tags)
+                    {
+                        <p>@tag</p>
+                    }
+                </td>
+                <td><button><a asp-action="Detail" asp-route-id="@item.id" asp-route-PageNum="@ViewBag.PageNum" class="btn-black">Detail</a></button></td>
+
+            </tr>
+        }
+    </table>
+
+    <!--Pagination Section-->
+    <button><a asp-controller="Products" asp-route-PageNum="0" class="btn-black">First</a></button>
+
+    <button><a asp-controller="Products" asp-route-PageNum="@(ViewBag.PageNum - 1)" class="btn-black">Previous</a></button>
+
+    <button><a asp-controller="Products" asp-route-PageNum="@(ViewBag.PageNum - 1) " class="btn-black">@(ViewBag.PageNum)</a></button>
+
+    <button><a asp-controller="Products" asp-route-PageNum="@ViewBag.PageNum" class="btn-black">@(ViewBag.PageNum + 1)</a></button>
+
+    <button><a asp-controller="Products" asp-route-PageNum="@(ViewBag.PageNum + 1)" class="btn-black">@(ViewBag.PageNum + 2)</a></button>
+
+    <button><a asp-controller="Products" asp-route-PageNum="@(ViewBag.PageNum + 1)" class="btn-black">Next</a></button>
+
+    <button><a asp-controller="Products" asp-route-PageNum="@ViewBag.TotalPages" class="btn-black">Last</a></button>
+
+    @if (ViewBag.PageNum >= ViewBag.TotalPages)
+    {
+        <p>Displaying @((ViewBag.PageNum) * 30)-@ViewBag.TotalProducts / @ViewBag.TotalProducts Products</p>
+    }
+    else
+    {
+        <p>Displaying @((ViewBag.PageNum) * 30)-@((ViewBag.PageNum + 1) * 30) / @ViewBag.TotalProducts Products</p>
+    }
+
+
+}
 
