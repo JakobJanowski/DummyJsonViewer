@@ -12,9 +12,9 @@ namespace DummyJsonViewer.Controllers
         private readonly ILogger<ProductsController> _logger;
         private readonly IHttpClientFactory _clientFactory;
 
-        private int limit = 30;
-        private int skip = 0;
-        public Product[] products { get; set; }
+       
+        
+        public Products products { get; set; }
         //Remove
         public bool GetStudentsError { get; private set; }
 
@@ -25,11 +25,18 @@ namespace DummyJsonViewer.Controllers
         }
        
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int?Skip)
         {
+            //Calculate skip
+           
+            int? skip = Skip ?? 0;
+            if(skip < 0)
+            {
+                skip = 0;
+            }
             var message = new HttpRequestMessage();
             message.Method = HttpMethod.Get;
-            message.RequestUri = new Uri($"{BASE_URL}/products?limit={limit}&skip={skip}"); 
+            message.RequestUri = new Uri($"{BASE_URL}/products?limit=30&skip={skip}"); 
             message.Headers.Add("Accept", "application/json");
 
             var client = _clientFactory.CreateClient();
@@ -41,9 +48,9 @@ namespace DummyJsonViewer.Controllers
                 _logger.LogInformation("Got milk");
                 using var responseStream = await response.Content.ReadAsStreamAsync();
               
-                Products test = await JsonSerializer.DeserializeAsync<Products>(responseStream);
-
-                products = test.products;
+                products = await JsonSerializer.DeserializeAsync<Products>(responseStream);
+                products.skipped = skip;
+                
                 
                 
 
@@ -55,7 +62,7 @@ namespace DummyJsonViewer.Controllers
                 
                 
             }
-
+            
             return View(products);
         }
     }

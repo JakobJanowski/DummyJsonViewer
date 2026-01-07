@@ -1,4 +1,4 @@
-﻿@model Product[]
+﻿@model Products
 @{
 	ViewData["Title"] = "Products";
 }
@@ -11,7 +11,7 @@
         <th>Tags</th>
        
     </tr>
-    @foreach (var item in Model)
+    @foreach (var item in Model.products)
     {
         <tr>
             <td> <img src=@item.thumbnail /> </td>
@@ -28,5 +28,6 @@
     }
 </table>
 
-
+<a asp-controller="Products"  asp-route-skip="@(Model.skipped - 30)" class="btn-black">Previous</a>
+<a asp-controller="Products" asp-route-skip="@(Model.skipped + 30)" class="btn-black">Next</a>
 
