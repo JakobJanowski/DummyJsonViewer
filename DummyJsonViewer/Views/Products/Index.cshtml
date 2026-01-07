@@ -1,0 +1,13 @@
+﻿@model Product[]
+@{
+	ViewData["Title"] = "Products";
+}
+
+
+@foreach (var item in Model)
+{
+    <p>@item.title</p>
+    //<p>@item.price</p>
+    //<p>@item.tags</p>W
+    //<p>@item.thumbnail</p>
+}
