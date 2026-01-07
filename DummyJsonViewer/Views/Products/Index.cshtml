@@ -3,11 +3,30 @@
 	ViewData["Title"] = "Products";
 }
 
+<table class="table table-striped table-bordered">
+    <tr>
+        <th>Thumbnail</th>
+        <th>Title</th>
+        <th>Price</th>
+        <th>Tags</th>
+       
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td> <img src=@item.thumbnail /> </td>
+            <td>@item.title</td>
+            <td>@item.price</td>
+            <td>
+                @foreach(var tag in @item.tags)
+                {
+                    <p>@tag</p>
+                }
+            </td>
+            
+        </tr>
+    }
+</table>
 
-@foreach (var item in Model)
-{
-    <p>@item.title</p>
-    //<p>@item.price</p>
-    //<p>@item.tags</p>W
-    //<p>@item.thumbnail</p>
-}
+
+

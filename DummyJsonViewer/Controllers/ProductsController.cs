@@ -11,6 +11,9 @@ namespace DummyJsonViewer.Controllers
         const string BASE_URL = "https://dummyjson.com";
         private readonly ILogger<ProductsController> _logger;
         private readonly IHttpClientFactory _clientFactory;
+
+        private int limit = 30;
+        private int skip = 0;
         public Product[] products { get; set; }
         //Remove
         public bool GetStudentsError { get; private set; }
@@ -20,12 +23,13 @@ namespace DummyJsonViewer.Controllers
             _logger = logger;
             _clientFactory = clientFactory;
         }
+       
 
         public async Task<IActionResult> Index()
         {
             var message = new HttpRequestMessage();
             message.Method = HttpMethod.Get;
-            message.RequestUri = new Uri($"{BASE_URL}/products"); 
+            message.RequestUri = new Uri($"{BASE_URL}/products?limit={limit}&skip={skip}"); 
             message.Headers.Add("Accept", "application/json");
 
             var client = _clientFactory.CreateClient();
